@@ -5,6 +5,10 @@ body {
 }
 
 .container {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-rows: auto auto;
+    gap: 20px;
     max-width: 600px;
     margin: 0 auto;
     padding: 20px;
@@ -13,7 +17,18 @@ body {
     border-radius: 10px;
 }
 
+.header-form-wrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+header {
+    grid-column: 1;
+    grid-row: 1;
+}
+
 form {
+    width: 100%;
     display: flex;
     flex-direction: column;
     gap: 1em;
@@ -31,6 +46,8 @@ form label {
 
 form input[type="number"],
 form input[type="submit"] {
+    width: 100%;
+    box-sizing: border-box;
     padding: 10px;
     border: 1px solid #ddd;
     border-radius: 5px;
@@ -52,11 +69,6 @@ form input[type="submit"]:hover {
     background-color: #444;
 }
 
-.content {
-    display: flex;
-    justify-content: space-between;
-    align-items: start;
-}
 
 @keyframes startRotate {
     0% {
@@ -68,20 +80,48 @@ form input[type="submit"]:hover {
 }
 
 @keyframes rotate {
-    0% {
+    0%, 100% {
         transform: rotate(45deg);
     }
     50% {
         transform: rotate(-45deg);
     }
-    100% {
-        transform: rotate(45deg);
-    }
 }
 
 .side-svg {
-    width: 200px;
+    width: 150px;
     height: auto;
-    margin-left: 20px;
     animation: startRotate 3s ease-in-out forwards, rotate 12s ease-in-out 3s infinite;
+}
+
+.svg-text {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+@keyframes flash {
+    0%, 100% {
+        opacity: 0;
+    }
+    50% {
+        opacity: .03;
+    }
+}
+
+.menacing-item {
+    color: #b20000;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    font-size: 1.5em;
+    margin: 0 10px;
+    animation: flash 15s infinite;
+}
+
+.menacing-items {
+    text-align: center;
 }

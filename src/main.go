@@ -1,36 +1,33 @@
 package main
 
 import (
-	"html/template"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
 func main() {
-	http.HandleFunc("/", HomePage)
+	router := gin.Default()
 
-	fs := http.FileServer(http.Dir("./assets"))
-	http.Handle("/static/", http.StripPrefix("/static/", fs))
+	router.Static("/static", "./src/assets")
 
-	http.ListenAndServe(":8080", nil)
+	router.LoadHTMLGlob("./src/templates/*.html")
+
+	router.GET("/", HomePage)
+
+	router.Run("localhost:8080")
 }
 
-func HomePage(w http.ResponseWriter, r *http.Request) {
+func HomePage(c *gin.Context) {
 	data := struct {
 		Title  string
 		Header string
+		Items  []string
 	}{
 		Title:  "Thing",
 		Header: "Welcome to Thing!",
+		Items:  []string{"You", "Will", "Pay"},
 	}
 
-	tmpl, err := template.ParseFiles("index.html")
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	err = tmpl.Execute(w, data)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-	}
+	c.HTML(http.StatusOK, "index.html", data)
 }
