@@ -108,7 +108,7 @@ form input[type="submit"]:hover {
         opacity: 0;
     }
     50% {
-        opacity: .03;
+        opacity: .1;
     }
 }
 
