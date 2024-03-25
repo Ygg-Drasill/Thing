@@ -1,7 +1,7 @@
 package main
 
 import (
-	"net/http"
+	. "github.com/Ygg-Drasill/Thing/src/pages"
 
 	"github.com/gin-gonic/gin"
 )
@@ -9,25 +9,11 @@ import (
 func main() {
 	router := gin.Default()
 
-	router.Static("/static", "./src/assets")
+	router.Static("/static", "./assets")
 
-	router.LoadHTMLGlob("./src/templates/*.html")
+	router.LoadHTMLGlob("./templates/*.html")
 
 	router.GET("/", HomePage)
 
 	router.Run("localhost:8080")
-}
-
-func HomePage(c *gin.Context) {
-	data := struct {
-		Title  string
-		Header string
-		Items  []string
-	}{
-		Title:  "Thing",
-		Header: "Welcome to Thing!",
-		Items:  []string{"You", "Will", "Pay"},
-	}
-
-	c.HTML(http.StatusOK, "index.html", data)
 }

@@ -3,7 +3,7 @@ package pages
 import (
 	"net/http"
 
-	gin "github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin"
 )
 
 func HomePage(c *gin.Context) {
@@ -14,7 +14,7 @@ func HomePage(c *gin.Context) {
 	}{
 		Title:  "Thing",
 		Header: "Welcome to Thing!",
-		Items:  []string{"You", "Will", "Pay"},
+		Items:  []string{"You", "Will", "Pays"},
 	}
 
 	c.HTML(http.StatusOK, "index.html", data)
