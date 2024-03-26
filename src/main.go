@@ -1,36 +1,24 @@
 package main
 
 import (
-	"html/template"
-	"net/http"
+	. "github.com/Ygg-Drasill/Thing/src/pages"
+	"github.com/gin-contrib/sessions"
+	"github.com/gin-contrib/sessions/cookie"
+	"github.com/gin-gonic/gin"
 )
 
 func main() {
-	http.HandleFunc("/", HomePage)
+	router := gin.Default()
 
-	fs := http.FileServer(http.Dir("./assets"))
-	http.Handle("/static/", http.StripPrefix("/static/", fs))
+	store := cookie.NewStore([]byte("secret"))
+	router.Use(sessions.Sessions("mysession", store))
 
-	http.ListenAndServe(":8080", nil)
-}
+	router.Static("/static", "./src/assets")
 
-func HomePage(w http.ResponseWriter, r *http.Request) {
-	data := struct {
-		Title  string
-		Header string
-	}{
-		Title:  "Thing",
-		Header: "Welcome to Thing!",
-	}
+	router.LoadHTMLGlob("./src/templates/*.html")
 
-	tmpl, err := template.ParseFiles("index.html")
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
+	router.GET("/", HomePage)
+	router.POST("/submit", SubmitHandler)
 
-	err = tmpl.Execute(w, data)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-	}
+	router.Run("localhost:8080")
 }

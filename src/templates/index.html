@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{{.Title}}</title>
+        <link rel="icon" href="/static/images/gopher_serpent.svg" type="image/svg+xml">
+        <link rel="stylesheet" href="/static/css/styles.css">
+        <script src="https://unpkg.com/htmx.org"></script>
+    </head>
+    <body>
+        <div class="container">
+            <div class="header-form-wrapper">
+                <header>
+                    <h1>{{.Header}}</h1>
+                </header>
+                <form hx-post="/submit" hx-trigger="submit" hx-target="#fines" hx-swap="innerHTML">
+                    <div class="form-group">
+                        <label for="person">Select person:</label>
+                        <select id="person" name="person" required>
+                            {{range $index, $person := .Person}}
+                                <option value="{{$person}}">{{$person}}</option>
+                            {{end}}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="fine">Enter fine amount:</label>
+                        <input type="number" id="fine" name="fine" min="0" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Submit">
+                    </div>
+                </form>
+            </div>
+            <div class="svg-text">
+                <p class="menacing-items">{{range .Items}}<span class="menacing-item">{{.}}</span>{{else}}No items found{{end}}</p>
+                <img src="/static/images/gopher_serpent.svg" alt="Gopher" class="side-svg">
+            </div>
+        </div>
+        <div class="container" id="fines">
+            {{range $index, $person := .Person}}
+                <p>{{$person}} owes: {{index $.Fines $person}} 🍌</p>
+            {{end}}
+        </div>
+    </body>
+</html>
