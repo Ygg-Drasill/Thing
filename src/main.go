@@ -13,9 +13,9 @@ func main() {
 	store := cookie.NewStore([]byte("secret"))
 	router.Use(sessions.Sessions("mysession", store))
 
-	router.Static("/static", "./assets")
+	router.Static("/static", "./src/assets")
 
-	router.LoadHTMLGlob("./templates/*.html")
+	router.LoadHTMLGlob("./src/templates/*.html")
 
 	router.GET("/", HomePage)
 	router.POST("/submit", SubmitHandler)
