@@ -2,18 +2,23 @@ package main
 
 import (
 	. "github.com/Ygg-Drasill/Thing/src/pages"
-
+	"github.com/gin-contrib/sessions"
+	"github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
 	router := gin.Default()
 
+	store := cookie.NewStore([]byte("secret"))
+	router.Use(sessions.Sessions("mysession", store))
+
 	router.Static("/static", "./assets")
 
 	router.LoadHTMLGlob("./templates/*.html")
 
 	router.GET("/", HomePage)
+	router.POST("/submit", SubmitHandler)
 
 	router.Run("localhost:8080")
 }
