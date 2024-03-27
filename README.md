@@ -15,8 +15,10 @@ go mod download
 go install github.com/cosmtrek/air@latest
 ```
 
-Once installed run air from root directory. \
-`air`
+Once installed run air from root directory.
+```
+air
+```
 
 If everything was done correctly, you should get the following output without errors.
 ```
