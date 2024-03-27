@@ -24,6 +24,14 @@
                         </select>
                     </div>
                     <div class="form-group">
+                        <label for="penalty">Select penalty:</label>
+                        <select id="penalty" name="penalty" required>
+                            {{range $key, $value := .Penalty}}
+                                <option value="{{$value}}">{{$key}}</option>
+                            {{end}}
+                        </select>
+                    </div>
+                    <div class="form-group">
                         <label for="fine">Enter fine amount:</label>
                         <input type="number" id="fine" name="fine" min="0" required>
                     </div>
