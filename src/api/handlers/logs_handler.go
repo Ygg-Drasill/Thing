@@ -1,14 +1,26 @@
 package handlers
 
 import (
+	"io"
 	"net/http"
-	"strings"
+	"os"
 
-	"github.com/Ygg-Drasill/Thing/src/features/logs"
 	"github.com/gin-gonic/gin"
 )
 
 func LogsHandler(context *gin.Context) {
-	logsData := strings.Join(logs.GetLogs(), "\n")
-	context.String(http.StatusOK, logsData)
+	file, err := os.Open("logs/logs.txt")
+	if err != nil {
+		context.JSON(http.StatusInternalServerError, gin.H{"error": "Unable to open logs"})
+		return
+	}
+	defer file.Close()
+
+	logs, err := io.ReadAll(file)
+	if err != nil {
+		context.JSON(http.StatusInternalServerError, gin.H{"error": "Unable to read logs"})
+		return
+	}
+
+	context.String(http.StatusOK, string(logs))
 }
