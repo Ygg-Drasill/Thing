@@ -7,6 +7,7 @@ import (
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 
+	"github.com/Ygg-Drasill/Thing/src/features/logs"
 	"github.com/Ygg-Drasill/Thing/src/features/penalties"
 )
 
@@ -20,6 +21,7 @@ func SubmitHandler(context *gin.Context) {
 		log.Printf("Invalid penalty: %v", penaltyStr)
 		return
 	}
+	penaltyAmount := penalty
 
 	currentPenaltyStr := session.Get("penalty_" + person)
 	if currentPenaltyStr != nil {
@@ -32,10 +34,13 @@ func SubmitHandler(context *gin.Context) {
 	}
 
 	session.Set("penalty_"+person, strconv.Itoa(penalty))
-	log.Printf("Person: %v", person)
-	log.Printf("Penalty string: %v", penaltyStr)
-	log.Printf("Penalty from map: %v", penalty)
-	log.Printf("Current penalty string: %v", currentPenaltyStr)
+
+	logs.LogIP(context.ClientIP())
+	logs.LogPerson(person)
+	logs.LogPenaltyString(penaltyStr)
+	logs.LogPenaltyAmount(penaltyAmount)
+	logs.LogCurrentPenaltyString(currentPenaltyStr)
+	logs.LogPenaltyFromMap(penalty)
 	session.Save()
 
 	PenaltiesHandler(context)
