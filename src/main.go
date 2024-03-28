@@ -1,7 +1,8 @@
 package main
 
 import (
-	. "github.com/Ygg-Drasill/Thing/src/api/handlers"
+	"github.com/Ygg-Drasill/Thing/src/api/handlers"
+	"github.com/Ygg-Drasill/Thing/src/features/logs"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-gonic/gin"
@@ -17,9 +18,11 @@ func main() {
 
 	router.LoadHTMLGlob("./src/templates/*.html")
 
-	router.GET("/", HomePage)
-	router.POST("/submit", SubmitHandler)
-	router.GET("/logs", LogsHandler)
+	router.GET("/", handlers.HomePage)
+	router.POST("/submit", handlers.SubmitHandler)
+	router.GET("/logs", handlers.LogsHandler)
+
+	defer logs.Close()
 
 	router.Run("localhost:8080")
 }

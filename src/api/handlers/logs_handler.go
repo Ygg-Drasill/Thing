@@ -8,7 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func LogsHandler(c *gin.Context) {
+func LogsHandler(context *gin.Context) {
 	logsData := strings.Join(logs.GetLogs(), "\n")
-	c.String(http.StatusOK, logsData)
+	context.String(http.StatusOK, logsData)
 }

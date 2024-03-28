@@ -21,6 +21,7 @@ func SubmitHandler(context *gin.Context) {
 		log.Printf("Invalid penalty: %v", penaltyStr)
 		return
 	}
+	penaltyAmount := penalty
 
 	currentPenaltyStr := session.Get("penalty_" + person)
 	if currentPenaltyStr != nil {
@@ -33,8 +34,11 @@ func SubmitHandler(context *gin.Context) {
 	}
 
 	session.Set("penalty_"+person, strconv.Itoa(penalty))
+
+	logs.LogIP(context.ClientIP())
 	logs.LogPerson(person)
 	logs.LogPenaltyString(penaltyStr)
+	logs.LogPenaltyAmount(penaltyAmount)
 	logs.LogCurrentPenaltyString(currentPenaltyStr)
 	logs.LogPenaltyFromMap(penalty)
 	session.Save()
