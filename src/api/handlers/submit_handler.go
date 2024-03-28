@@ -7,7 +7,7 @@ import (
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 
-	"github.com/Ygg-Drasill/Thing/src/penalties"
+	"github.com/Ygg-Drasill/Thing/src/features/penalties"
 )
 
 func SubmitHandler(context *gin.Context) {

@@ -5,7 +5,8 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/Ygg-Drasill/Thing/src/penalties"
+	"github.com/Ygg-Drasill/Thing/src/features/penalties"
+	"github.com/Ygg-Drasill/Thing/src/features/people"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 )
@@ -13,6 +14,7 @@ import (
 func PenaltiesHandler(context *gin.Context) {
 	session := sessions.Default(context)
 
+	person := people.PersonList
 	penalty := penalties.PenaltyMap
 
 	data := struct {
@@ -20,7 +22,7 @@ func PenaltiesHandler(context *gin.Context) {
 		Penalty   map[string]int
 		Penalties map[string]int
 	}{
-		Person:    []string{"Androkles", "Alexander", "Mathias", "Gustav", "Tobias", "Mikael"},
+		Person:    person,
 		Penalty:   penalty,
 		Penalties: make(map[string]int),
 	}
