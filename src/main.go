@@ -19,6 +19,7 @@ func main() {
 
 	router.GET("/", HomePage)
 	router.POST("/submit", SubmitHandler)
+	router.GET("/logs", LogsHandler)
 
 	router.Run("localhost:8080")
 }
