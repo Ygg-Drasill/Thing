@@ -1,9 +1,10 @@
-package pages
+package handlers
 
 import (
 	"net/http"
 
-	"github.com/Ygg-Drasill/Thing/src/penalties"
+	"github.com/Ygg-Drasill/Thing/src/features/penalties"
+	"github.com/Ygg-Drasill/Thing/src/features/people"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 )
@@ -19,6 +20,7 @@ func HomePage(context *gin.Context) {
 		selectedPersonStr = ""
 	}
 
+	person := people.PersonList
 	penalty := penalties.PenaltyMap
 
 	data := struct {
@@ -33,7 +35,7 @@ func HomePage(context *gin.Context) {
 		Title:          "Thing",
 		Header:         "Welcome to Thing!",
 		Items:          []string{"You", "Will", "Pay"},
-		Person:         []string{"Androkles", "Alexander", "Mathias", "Gustav", "Tobias", "Mikael"},
+		Person:         person,
 		SelectedPerson: selectedPersonStr,
 		Penalty:        penalty,
 		Penalties:      make(map[string]int),
@@ -42,12 +44,11 @@ func HomePage(context *gin.Context) {
 	for _, person := range data.Person {
 		penalty := session.Get("penalty_" + person)
 		if penalty != nil {
-			// Assuming fine is a string that represents a key in the Penalty map
 			data.Penalties[person] = data.Penalty[penalty.(string)]
 		} else {
 			data.Penalties[person] = 0
 		}
 	}
 
-	context.HTML(http.StatusOK, "index.html", data)
+	context.HTML(http.StatusOK, "home.html", data)
 }
