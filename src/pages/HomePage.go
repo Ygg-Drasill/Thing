@@ -3,6 +3,7 @@ package pages
 import (
 	"net/http"
 
+	"github.com/Ygg-Drasill/Thing/src/penalties"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 )
@@ -18,14 +19,7 @@ func HomePage(context *gin.Context) {
 		selectedPersonStr = ""
 	}
 
-	fine := session.Get("fine_" + selectedPersonStr)
-
-	var fineStr string
-	if fine != nil {
-		fineStr = fine.(string)
-	} else {
-		fineStr = ""
-	}
+	penalty := penalties.PenaltyMap
 
 	data := struct {
 		Title          string
@@ -33,24 +27,25 @@ func HomePage(context *gin.Context) {
 		Items          []string
 		Person         []string
 		SelectedPerson string
-		Fine           string
-		Fines          map[string]string
+		Penalty        map[string]int
+		Penalties      map[string]int
 	}{
 		Title:          "Thing",
 		Header:         "Welcome to Thing!",
 		Items:          []string{"You", "Will", "Pay"},
 		Person:         []string{"Androkles", "Alexander", "Mathias", "Gustav", "Tobias", "Mikael"},
 		SelectedPerson: selectedPersonStr,
-		Fine:           fineStr,
-		Fines:          make(map[string]string),
+		Penalty:        penalty,
+		Penalties:      make(map[string]int),
 	}
 
 	for _, person := range data.Person {
-		fine := session.Get("fine_" + person)
-		if fine != nil {
-			data.Fines[person] = fine.(string)
+		penalty := session.Get("penalty_" + person)
+		if penalty != nil {
+			// Assuming fine is a string that represents a key in the Penalty map
+			data.Penalties[person] = data.Penalty[penalty.(string)]
 		} else {
-			data.Fines[person] = "0"
+			data.Penalties[person] = 0
 		}
 	}
 
