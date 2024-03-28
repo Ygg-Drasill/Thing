@@ -1,0 +1,3 @@
+{{range $index, $person := .Person}}
+    <p>{{$person}} owes: {{index $.Penalties $person}} 🍌</p>
+{{end}}
