@@ -35,4 +35,4 @@ tmp/
 .idea
 
 # Logs for penalties
-logs/*
+src/logs/*logs*

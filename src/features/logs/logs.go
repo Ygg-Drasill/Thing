@@ -14,7 +14,7 @@ var (
 
 func init() {
 	var err error
-	file, err = os.OpenFile("logs/logs.txt", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0666)
+	file, err = os.OpenFile("src/logs/logs.txt", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0666)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -47,13 +47,13 @@ func LogPenaltyAmount(penaltyAmount int) {
 }
 
 func LogCurrentPenaltyString(currentPenaltyStr interface{}) {
-	logStr := fmt.Sprintf("Old penalty amount: %v", currentPenaltyStr)
+	logStr := fmt.Sprintf("Old penalty total: %v kr.", currentPenaltyStr)
 	logs = append(logs, logStr)
 	logger.Println(logStr)
 }
 
 func LogPenaltyFromMap(penalty int) {
-	logStr := fmt.Sprintf("New penalty amount: %v\n", penalty)
+	logStr := fmt.Sprintf("New penalty total: %v kr.\n", penalty)
 	logs = append(logs, logStr)
 	logger.Println(logStr)
 }
