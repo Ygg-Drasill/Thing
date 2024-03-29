@@ -5,6 +5,7 @@ import (
 
 	"github.com/Ygg-Drasill/Thing/src/features/penalties"
 	"github.com/Ygg-Drasill/Thing/src/features/people"
+	"github.com/Ygg-Drasill/Thing/src/utils"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 )
@@ -42,12 +43,7 @@ func HomePage(context *gin.Context) {
 	}
 
 	for _, person := range data.Person {
-		penalty := session.Get("penalty_" + person)
-		if penalty != nil {
-			data.Penalties[person] = data.Penalty[penalty.(string)]
-		} else {
-			data.Penalties[person] = 0
-		}
+		data.Penalties[person] = utils.GetPenalty(session, person)
 	}
 
 	context.HTML(http.StatusOK, "home.html", data)
