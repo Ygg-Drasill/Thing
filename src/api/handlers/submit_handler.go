@@ -36,7 +36,8 @@ func SubmitHandler(context *gin.Context) {
 	logs.LogCurrentPenaltyString(penalty - penaltyAmount)
 	logs.LogPenaltyFromMap(penalty)
 
+	session.Set("submitted", true)
 	session.Save()
 
-	PenaltiesHandler(context)
+	HomePage(context)
 }

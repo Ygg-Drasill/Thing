@@ -5,6 +5,7 @@ import (
 
 	"github.com/Ygg-Drasill/Thing/src/features/penalties"
 	"github.com/Ygg-Drasill/Thing/src/features/people"
+	"github.com/Ygg-Drasill/Thing/src/types/data"
 	"github.com/Ygg-Drasill/Thing/src/utils"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
@@ -13,6 +14,7 @@ import (
 func HomePage(context *gin.Context) {
 	session := sessions.Default(context)
 	selectedPerson := session.Get("selectedPerson")
+	submitted := session.Get("submitted")
 
 	var selectedPersonStr string
 	if selectedPerson != nil {
@@ -24,27 +26,17 @@ func HomePage(context *gin.Context) {
 	person := people.PersonList
 	penalty := penalties.PenaltyMap
 
-	data := struct {
-		Title          string
-		Header         string
-		Items          []string
-		Person         []string
-		SelectedPerson string
-		Penalty        map[string]int
-		Penalties      map[string]int
-	}{
-		Title:          "Thing",
-		Header:         "Welcome to Thing!",
-		Items:          []string{"You", "Will", "Pay"},
-		Person:         person,
-		SelectedPerson: selectedPersonStr,
-		Penalty:        penalty,
-		Penalties:      make(map[string]int),
+	templateData := data.NewTemplateData(person, selectedPersonStr, penalty)
+
+	for _, person := range templateData.Person {
+		templateData.Penalties[person] = utils.GetPenalty(session, person)
 	}
 
-	for _, person := range data.Person {
-		data.Penalties[person] = utils.GetPenalty(session, person)
+	if submitted != nil && submitted.(bool) {
+		session.Set("submitted", false)
+		session.Save()
+		context.HTML(http.StatusOK, "penalties.html", templateData)
+	} else {
+		context.HTML(http.StatusOK, "home.html", templateData)
 	}
-
-	context.HTML(http.StatusOK, "home.html", data)
 }
