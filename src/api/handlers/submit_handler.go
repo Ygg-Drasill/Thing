@@ -9,6 +9,7 @@ import (
 
 	"github.com/Ygg-Drasill/Thing/src/features/logs"
 	"github.com/Ygg-Drasill/Thing/src/features/penalties"
+	"github.com/Ygg-Drasill/Thing/src/utils"
 )
 
 func SubmitHandler(context *gin.Context) {
@@ -23,15 +24,8 @@ func SubmitHandler(context *gin.Context) {
 	}
 	penaltyAmount := penalty
 
-	currentPenaltyStr := session.Get("penalty_" + person)
-	if currentPenaltyStr != nil {
-		currentPenalty, err := strconv.Atoi(currentPenaltyStr.(string))
-		if err != nil {
-			log.Printf("Error converting current penalty to integer: %v", err)
-			return
-		}
-		penalty += currentPenalty
-	}
+	currentPenalty := utils.GetPenalty(session, person)
+	penalty += currentPenalty
 
 	session.Set("penalty_"+person, strconv.Itoa(penalty))
 
@@ -39,9 +33,11 @@ func SubmitHandler(context *gin.Context) {
 	logs.LogPerson(person)
 	logs.LogPenaltyString(penaltyStr)
 	logs.LogPenaltyAmount(penaltyAmount)
-	logs.LogCurrentPenaltyString(currentPenaltyStr)
+	logs.LogCurrentPenaltyString(penalty - penaltyAmount)
 	logs.LogPenaltyFromMap(penalty)
+
+	session.Set("submitted", true)
 	session.Save()
 
-	PenaltiesHandler(context)
+	HomePage(context)
 }
