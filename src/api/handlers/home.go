@@ -24,13 +24,18 @@ func HomePage(context *gin.Context) {
 	}
 
 	person := people.PersonList
-	penalty := penalties.PenaltyMap
+	owes := make(map[string]int)
 
-	templateData := data.NewTemplateData(person, selectedPersonStr, penalty)
-
-	for _, person := range templateData.Person {
-		templateData.Penalties[person] = utils.GetPenalty(session, person)
+	for _, person := range person {
+		owes[person] = utils.GetPenalty(session, person)
 	}
+
+	var selectedPenalty penalties.Penalty
+	if selectedPerson != nil {
+		selectedPenalty, _ = penalties.FindPenalty(selectedPersonStr)
+	}
+
+	templateData := data.NewTemplateData(person, selectedPersonStr, owes, selectedPenalty)
 
 	if submitted != nil && submitted.(bool) {
 		session.Set("submitted", false)

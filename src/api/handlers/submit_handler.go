@@ -17,24 +17,24 @@ func SubmitHandler(context *gin.Context) {
 	person := context.PostForm("person")
 	penaltyStr := context.PostForm("penalty")
 
-	penalty, ok := penalties.PenaltyMap[penaltyStr]
+	penalty, ok := penalties.FindPenalty(penaltyStr)
 	if !ok {
 		log.Printf("Invalid penalty: %v", penaltyStr)
 		return
 	}
-	penaltyAmount := penalty
+	penaltyAmount := penalty.Value
 
 	currentPenalty := utils.GetPenalty(session, person)
-	penalty += currentPenalty
+	penaltyAmount += currentPenalty
 
-	session.Set("penalty_"+person, strconv.Itoa(penalty))
+	session.Set("penalty_"+person, strconv.Itoa(penaltyAmount))
 
 	logs.LogIP(context.ClientIP())
 	logs.LogPerson(person)
 	logs.LogPenaltyString(penaltyStr)
 	logs.LogPenaltyAmount(penaltyAmount)
 	logs.LogOldPenaltyTotal(currentPenalty)
-	logs.LogNewPenaltyTotal(penalty)
+	logs.LogNewPenaltyTotal(penaltyAmount)
 
 	session.Set("submitted", true)
 	session.Save()
