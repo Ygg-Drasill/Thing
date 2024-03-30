@@ -21,6 +21,7 @@ func main() {
 	router.GET("/", handlers.HomePage)
 	router.POST("/submit", handlers.SubmitHandler)
 	router.GET("/logs", handlers.LogsHandler)
+	router.GET("/get-penalty-info", handlers.GetPenaltyInfo)
 
 	defer logs.Close()
 

@@ -25,11 +25,18 @@
                     </div>
                     <div class="form-group">
                         <label for="penalty">Select penalty:</label>
-                        <select id="penalty" name="penalty" required>
-                            {{range $index, $penalty := .Penalties}}
-                                <option value="{{$penalty.Name}}">{{$penalty.Name}}</option>
-                            {{end}}
-                        </select>
+                        <div class="select-tooltip-wrapper">
+                            <select id="penalty" name="penalty" required hx-get="/get-penalty-info" hx-trigger="change" hx-target=".tooltip .tooltiptext" hx-swap="innerHTML">
+                                <option value="" selected>Select</option>
+                                {{range $index, $penalty := .Penalties}}
+                                    <option value="{{$penalty.Name}}">{{$penalty.Name}}</option>
+                                {{end}}
+                            </select>
+                            <div class="tooltip">
+                                <img src="/static/images/help_outline.svg" alt="Help">
+                                <span class="tooltiptext">Select a penalty to see its info</span>
+                            </div>
+                        </div>
                     </div>
                     <div class="form-group">
                         <input type="submit" value="Submit">
