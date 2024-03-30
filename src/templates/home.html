@@ -26,8 +26,8 @@
                     <div class="form-group">
                         <label for="penalty">Select penalty:</label>
                         <select id="penalty" name="penalty" required>
-                            {{range $key, $value := .Penalty}}
-                                <option value="{{$key}}">{{$key}}</option>
+                            {{range $index, $penalty := .Penalties}}
+                                <option value="{{$penalty.Name}}">{{$penalty.Name}}</option>
                             {{end}}
                         </select>
                     </div>
@@ -43,7 +43,7 @@
         </div>
         <div class="container" id="penalties">
             {{range $index, $person := .Person}}
-                <p>{{$person}} owes: {{index $.Penalties $person}} 🍌</p>
+                <p>{{$person}} owes: {{index $.Owes $person}} 🍌</p>
             {{end}}
         </div>
     </body>

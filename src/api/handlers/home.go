@@ -3,7 +3,6 @@ package handlers
 import (
 	"net/http"
 
-	"github.com/Ygg-Drasill/Thing/src/features/penalties"
 	"github.com/Ygg-Drasill/Thing/src/features/people"
 	"github.com/Ygg-Drasill/Thing/src/types/data"
 	"github.com/Ygg-Drasill/Thing/src/utils"
@@ -24,13 +23,13 @@ func HomePage(context *gin.Context) {
 	}
 
 	person := people.PersonList
-	penalty := penalties.PenaltyMap
+	owes := make(map[string]int)
 
-	templateData := data.NewTemplateData(person, selectedPersonStr, penalty)
-
-	for _, person := range templateData.Person {
-		templateData.Penalties[person] = utils.GetPenalty(session, person)
+	for _, person := range person {
+		owes[person] = utils.GetPenalty(session, person)
 	}
+
+	templateData := data.NewTemplateData(person, selectedPersonStr, owes)
 
 	if submitted != nil && submitted.(bool) {
 		session.Set("submitted", false)

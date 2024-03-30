@@ -1,23 +1,25 @@
 package data
 
+import "github.com/Ygg-Drasill/Thing/src/features/penalties"
+
 type TemplateData struct {
 	Title          string
 	Header         string
 	Items          []string
 	Person         []string
 	SelectedPerson string
-	Penalty        map[string]int
-	Penalties      map[string]int
+	Penalties      []penalties.Penalty
+	Owes           map[string]int
 }
 
-func NewTemplateData(person []string, selectedPersonStr string, penalty map[string]int) TemplateData {
+func NewTemplateData(person []string, selectedPersonStr string, owes map[string]int) TemplateData {
 	return TemplateData{
 		Title:          "Thing",
 		Header:         "Welcome to Thing!",
 		Items:          []string{"You", "Will", "Pay"},
 		Person:         person,
 		SelectedPerson: selectedPersonStr,
-		Penalty:        penalty,
-		Penalties:      make(map[string]int),
+		Penalties:      penalties.Penalties,
+		Owes:           owes,
 	}
 }
