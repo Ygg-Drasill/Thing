@@ -33,8 +33,8 @@ func SubmitHandler(context *gin.Context) {
 	logs.LogPerson(person)
 	logs.LogPenaltyString(penaltyStr)
 	logs.LogPenaltyAmount(penaltyAmount)
-	logs.LogCurrentPenaltyString(penalty - penaltyAmount)
-	logs.LogPenaltyFromMap(penalty)
+	logs.LogOldPenaltyTotal(currentPenalty)
+	logs.LogNewPenaltyTotal(penalty)
 
 	session.Set("submitted", true)
 	session.Save()

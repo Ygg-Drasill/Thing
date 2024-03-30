@@ -46,14 +46,14 @@ func LogPenaltyAmount(penaltyAmount int) {
 	logger.Println(logStr)
 }
 
-func LogCurrentPenaltyString(currentPenaltyStr interface{}) {
-	logStr := fmt.Sprintf("Old penalty total: %v kr.", currentPenaltyStr)
+func LogOldPenaltyTotal(oldPenaltyTotal int) {
+	logStr := fmt.Sprintf("Old penalty total: %v kr.", oldPenaltyTotal)
 	logs = append(logs, logStr)
 	logger.Println(logStr)
 }
 
-func LogPenaltyFromMap(penalty int) {
-	logStr := fmt.Sprintf("New penalty total: %v kr.\n", penalty)
+func LogNewPenaltyTotal(newPenaltyTotal int) {
+	logStr := fmt.Sprintf("New penalty total: %v kr.\n", newPenaltyTotal)
 	logs = append(logs, logStr)
 	logger.Println(logStr)
 }
