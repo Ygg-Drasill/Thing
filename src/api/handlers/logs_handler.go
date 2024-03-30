@@ -9,7 +9,7 @@ import (
 )
 
 func LogsHandler(context *gin.Context) {
-	file, err := os.Open("src/logs/logs.txt")
+	file, err := os.Open("src/logs/penalties.log")
 	if err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Unable to open logs"})
 		return
