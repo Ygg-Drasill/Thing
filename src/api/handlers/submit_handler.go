@@ -32,7 +32,7 @@ func SubmitHandler(context *gin.Context) {
 	logs.LogIP(context.ClientIP())
 	logs.LogPerson(person)
 	logs.LogPenaltyString(penaltyStr)
-	logs.LogPenaltyAmount(penaltyAmount)
+	logs.LogPenaltyAmount(penalty.Value)
 	logs.LogOldPenaltyTotal(currentPenalty)
 	logs.LogNewPenaltyTotal(penaltyAmount)
 
