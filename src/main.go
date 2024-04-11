@@ -23,6 +23,8 @@ func main() {
 	router.GET("/logs", handlers.LogsHandler)
 	router.GET("/get-penalty-info", handlers.GetPenaltyInfo)
 
+	router.NoRoute(handlers.NoRouteHandler)
+
 	defer logs.Close()
 
 	router.Run(":8080")
